@@ -16,7 +16,10 @@ const databaseUrl = resolveDatabaseUrl();
 
 export const pool = new Pool({
   connectionString: databaseUrl,
-  ssl: databaseUrl.includes("amazonaws.com") ? { rejectUnauthorized: false } : undefined,
+  // Enable SSL for Neon (neon.tech) and AWS RDS — both require it
+  ssl: (databaseUrl.includes("amazonaws.com") || databaseUrl.includes("neon.tech"))
+    ? { rejectUnauthorized: false }
+    : undefined,
 });
 
 // ---------- users ----------
